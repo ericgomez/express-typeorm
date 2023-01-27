@@ -10,7 +10,7 @@ npx typeorm init --name express-typeorm --database mysql --express
 ## Add dependencies production
 
 ```sh
-npm install cors jsonwebtoken bcryptjs class-validator
+npm install cors helmet jsonwebtoken bcryptjs class-validator
 ```
 
 ## Add dependencies development
