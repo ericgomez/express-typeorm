@@ -1,9 +1,8 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
 import * as cors from 'cors';
 import helmet from 'helmet';
 import { AppDataSource } from './data-source';
-import { User } from './entity/User';
+import routes from './routes';
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,6 +16,8 @@ AppDataSource.initialize()
     app.use(express.json());
 
     // setup express app here
+    // Routes
+    app.use('/api', routes);
 
     // start express server
     app.listen(PORT, () => console.log(`Express server has started on port ${PORT}. Open http://localhost:${PORT}`));
