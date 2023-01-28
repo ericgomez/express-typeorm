@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
 import { AppDataSource } from './../data-source';
 import { User } from './../entity/User';
+import config from '../config/config';
 
 class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -20,7 +22,9 @@ class AuthController {
         return res.status(400).json({ message: 'Username or password is incorrect!' });
       }
 
-      res.send(user);
+      const token = jwt.sign({ userId: user.id, username: user.username }, config.jwtSecret, { expiresIn: '1h' });
+
+      res.json({ messge: 'OK', token });
     } catch (error) {
       return res.status(404).json({ message: 'Username or password is incorrect!' });
     }
