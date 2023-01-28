@@ -42,9 +42,9 @@ class UserController {
     });
 
     // validations
-    const errors = await validate(user);
+    const errors = await validate(user, { validationError: { target: false, value: false } });
     if (errors.length > 0) {
-      return res.status(400).json({ message: 'Validation error' });
+      return res.status(400).json(errors);
     }
 
     // TODO: HASH PASSWORD
@@ -76,7 +76,7 @@ class UserController {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const errors = await validate(user);
+    const errors = await validate(user, { validationError: { target: false, value: false } });
     if (errors.length > 0) {
       return res.status(400).json(errors);
     }
