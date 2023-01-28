@@ -35,17 +35,19 @@ class AuthController {
     const { userId } = res.locals.jwtPayload;
     const { oldPassword, newPassword } = req.body;
 
-    if (oldPassword && newPassword) {
-      res.status(400).json({ message: 'Old password and new password are not allowed!' });
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'oldPassword and newPassword are required!' });
     }
 
     const userRepository = AppDataSource.getRepository(User);
     let user: User;
 
     try {
-      user = await userRepository.findOneOrFail(userId);
+      user = await userRepository.findOneOrFail({
+        where: { id: userId },
+      });
     } catch (error) {
-      res.status(400).json({ message: 'Something goes wrong!' });
+      return res.status(400).json({ message: 'Something goes wrong!' });
     }
 
     if (!user.checkPassword(oldPassword)) {

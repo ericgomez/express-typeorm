@@ -47,10 +47,9 @@ class UserController {
       return res.status(400).json(errors);
     }
 
-    // TODO: HASH PASSWORD
-
     const userRepository = AppDataSource.getRepository(User);
     try {
+      // Hash password
       user.hashPassword();
       await userRepository.save(user);
     } catch (error) {
@@ -64,7 +63,7 @@ class UserController {
   static editUser = async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id);
     const { username, role } = req.body;
-    let user;
+    let user: User;
 
     const userRepository = AppDataSource.getRepository(User);
     try {
@@ -84,6 +83,7 @@ class UserController {
     try {
       await userRepository.save(user);
     } catch (error) {
+      console.log('error', error);
       return res.status(409).json({ message: 'Username already in use' });
     }
 

@@ -10,7 +10,9 @@ export const checkRole = (roles: Array<string>) => {
     let user: User;
 
     try {
-      user = await userRepository.findOneOrFail(userId);
+      user = await userRepository.findOneOrFail({
+        where: { id: userId },
+      });
     } catch (error) {
       return res.status(401).json({ message: 'Not Authorized' });
     }
@@ -18,7 +20,7 @@ export const checkRole = (roles: Array<string>) => {
     const { role } = user;
 
     // Checks if the user's role exists in the roles required by the route
-    if (!roles.includes(role)) {
+    if (roles.includes(role)) {
       next();
     } else {
       res.status(401).json({ message: 'Not Authorized' });
